@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Race</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form (ngSubmit)="SimulateRace()">
+    <button ion-button round type="submit" block>Race</button>
+  </form>
+    
+  <ion-list inset *ngIf="display_results">
+    <ion-item *ngFor="let section_times of results.sections">
+      <!-- {{loadingFunction()}} zakomentirano ker preveč naspamma nevem zakaj - to be fixed -->
+      <ul *ngFor="let times of section_times">
+        <li>{{times}}</li> 
+      </ul>
+      <br>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,9 @@
+<ion-tabs *ngIf="isLoggedIn()">
+  <ion-tab [root]="profileTab" tabTitle="Profile" tabIcon="ios-body"></ion-tab>
+  <ion-tab [root]="tracksTab" tabTitle="Tracks" tabIcon="map"></ion-tab>
+  <ion-tab [root]="raceTab" tabTitle="Race" tabIcon="car"></ion-tab>
+</ion-tabs>
+<ion-tabs *ngIf="!isLoggedIn()">
+  <ion-tab [root]="loginTab" tabTitle="Login" tabIcon="ios-body"></ion-tab>
+  <ion-tab [root]="registerTab" tabTitle="Register" tabIcon="information-circle"></ion-tab>
+</ion-tabs>
