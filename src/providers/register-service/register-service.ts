@@ -50,13 +50,9 @@ export class RegisterServiceProvider {
       this.http.post(this.apiUrl+"/user/login", login_details).subscribe(data =>{
         localStorage.setItem('currentUser', JSON.stringify(data));
         resolve(data);
-
       }), error => {
         console.log(error);
       }
     })
   }
-
-  
-
 }

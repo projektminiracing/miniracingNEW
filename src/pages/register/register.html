@@ -8,27 +8,27 @@
   <h2>Add User</h2>
   <form (ngSubmit)="saveUser()">
     <ion-item>
-      <ion-label>Username</ion-label>
+      <ion-label stacked>Username</ion-label>
       <ion-input type="text" [(ngModel)]="user.username" name="username"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Email</ion-label>
+      <ion-label stacked>Email</ion-label>
       <ion-input type="email" [(ngModel)]="user.email" name="email"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Password</ion-label>
+      <ion-label stacked>Password</ion-label>
       <ion-input type="password" [(ngModel)]="user.password" name="password"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>First name</ion-label>
+      <ion-label stacked>First name</ion-label>
       <ion-input type="text" [(ngModel)]="user.firstname" name="firstname"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Last name</ion-label>
+      <ion-label stacked>Last name</ion-label>
       <ion-input type="text" [(ngModel)]="user.lastname" name="lastname"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Birthday</ion-label>
+      <ion-label stacked>Birthday</ion-label>
       <ion-input type="date" [(ngModel)]="user.birthday" name="birthday"></ion-input>
     </ion-item>
     <button ion-button type="submit" block>Register</button>

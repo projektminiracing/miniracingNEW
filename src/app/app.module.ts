@@ -10,6 +10,7 @@ import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TracksPage } from '../pages/tracks/tracks';
 import { ProfilePage } from '../pages/profile/profile';
+import { CareerPage } from '../pages/career/career';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,7 +25,8 @@ import { RaceServiceProvider } from '../providers/race-service/race-service';
     LoginPage,
     TabsPage,
     TracksPage,
-    ProfilePage
+    ProfilePage,
+    CareerPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,8 @@ import { RaceServiceProvider } from '../providers/race-service/race-service';
     LoginPage,
     TabsPage,
     TracksPage,
-    ProfilePage
+    ProfilePage,
+    CareerPage
   ],
   providers: [
     StatusBar,

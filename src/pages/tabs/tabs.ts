@@ -5,6 +5,7 @@ import { RacePage } from '../race/race';
 import { LoginPage } from '../login/login';
 import { TracksPage } from '../tracks/tracks';
 import { ProfilePage } from '../profile/profile';
+import { CareerPage } from '../career/career';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -16,6 +17,7 @@ export class TabsPage {
   tracksTab = TracksPage;
   raceTab = RacePage;
   profileTab = ProfilePage;
+  careerTab = CareerPage;
 
   constructor() {
 

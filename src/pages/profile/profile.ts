@@ -13,7 +13,7 @@ export class ProfilePage {
   user_profile: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public registerServiceProvider: RegisterServiceProvider) {
-    this.user_profile = { username: '', email: '', password: '', firstname: '', lastname: '', birthday: ''};
+    this.user_profile = JSON.parse(localStorage.getItem("currentUser"));
   }
 
   share(socialNet: string, fab: FabContainer) {
@@ -23,11 +23,9 @@ export class ProfilePage {
 
   updateUser(){
     console.log(JSON.stringify(this.user_profile));
-    /*
     this.registerServiceProvider.updateUser(this.user_profile).then(data => {
       this.user_profile = data;
     })
-    */
   }
 
   logout(){ 
@@ -37,5 +35,4 @@ export class ProfilePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ProfilePage');
   }
-
 }

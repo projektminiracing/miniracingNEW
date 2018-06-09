@@ -26,7 +26,7 @@ export class RacePage {
   }
 
   SimulateRace(){
-    this.raceServiceProvider.SimulateRace().then(data => {
+    this.raceServiceProvider.SimulateRace(JSON.parse(localStorage.getItem("currentUser"))._id).then(data => {
       this.results = data;
       this.display_results = true;
       console.log(JSON.stringify(this.results));
