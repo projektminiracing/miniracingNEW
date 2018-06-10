@@ -7,31 +7,111 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>career</ion-title>
+    <ion-title>My career</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label stacked>Name</ion-label>
-    <ion-input type="text" [(ngModel)]="_driver.name" name="name"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Age</ion-label>
-    <ion-input type="text" [(ngModel)]="_driver.age" name="age"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Sex</ion-label>
-    <ion-input type="text" [(ngModel)]="_driver.sex" name="sex"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Rank</ion-label>
-    <ion-input type="text" [(ngModel)]="_driver.rank" name="rank"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label stacked>Win count</ion-label>
-    <ion-input type="text" [(ngModel)]="_driver.number_of_wins" name="number_of_wins"></ion-input>
-  </ion-item>
+  <!-- <pre>{{driver | json }}</pre>
+  <pre>{{vehicle | json }}</pre> -->
+  <ion-list *ngFor="let v of vehicle">
+    <ion-item>Manufacturer: {{v.manufacturer}}</ion-item>
+    <ion-item>Color: {{v.color}}</ion-item>
+    <ion-item>Weight: {{v.weight}}</ion-item>
+    <ion-item>Drive wheel: {{v.driveWheel}}</ion-item>
+    <ion-item>Battery left: {{v.batteryLeft}}</ion-item>
+    <ion-item>Charge time: {{v.chargeTime}}
+      <button (click)="upgrade('vehicle', 'chargeTime', -0.25)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-item>
+    <ion-item>Acceleration: {{v.acceleration}}
+      <button (click)="upgrade('vehicle', 'acceleration', -0.1)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-item>
+    <ion-item>Top speed: {{v.topSpeed}}
+      <button (click)="upgrade('vehicle', 'topSpeed', 5)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-item>
+    <ion-item>Horsepower: {{v.engine.horsePower}}
+      <button (click)="upgrade('vehicle', 'horsePower', 5)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-item>
+    <ion-item>Battery consumption: {{v.engine.batteryConsumption}}
+      <button (click)="upgrade('vehicle', 'batteryConsumption', -0.2)" ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+
+  <br><br>
+
+  <ion-list *ngFor="let d of driver">
+      <ion-item>Name: {{d.name}}</ion-item>
+      <ion-item>Age: {{d.age}}</ion-item>
+      <ion-item>Sex: {{d.sex}}</ion-item>
+      <ion-item>Rank: {{d.rank}}</ion-item>
+      <ion-item>Number of wins: {{d.number_of_wins}}</ion-item>
+      <ion-item>Speed: {{d.speed}}
+        <button (click)="upgrade('driver', 'speed', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Overtaking: {{d.overtaking}}
+        <button (click)="upgrade('driver', 'overtaking', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Blocking: {{d.blocking}}
+        <button (click)="upgrade('driver', 'blocking', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Bad weather: {{d.bad_weather}}
+        <button (click)="upgrade('driver', 'bad_weather', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Reaction time: {{d.reaction_time}}
+        <button (click)="upgrade('driver', 'reaction_time', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Patience: {{d.patience}}
+        <button (click)="upgrade('driver', 'patience', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Aggresiveness: {{d.aggresiveness}}
+        <button (click)="upgrade('driver', 'aggresiveness', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Will: {{d.will}}
+        <button (click)="upgrade('driver', 'will', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Intelligence: {{d.intelligence}}
+        <button (click)="upgrade('driver', 'intelligence', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Fitness: {{d.fitness}}
+        <button (click)="upgrade('driver', 'fitness', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Injuries: {{d.injuries}}
+        <button (click)="upgrade('driver', 'injuries', 1)" ion-button icon-only>
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>Overall: {{d.overall}}</ion-item>
+    </ion-list>
 </ion-content>
