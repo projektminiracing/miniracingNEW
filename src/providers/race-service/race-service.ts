@@ -15,9 +15,9 @@ export class RaceServiceProvider {
     console.log('Hello RaceServiceProvider Provider');
   }
 
-  SimulateRace(user_id : string){
+  SimulateRace(track_id : string, user_id : string){
     return new Promise(resolve => {
-      this.http.get(this.apiUrl + '/race/simulate/' + user_id).subscribe(data => {
+      this.http.get(this.apiUrl + '/race/simulate/' + track_id + '/' + user_id).subscribe(data => {
         resolve(data);
       }), err => {
         console.log(err);
@@ -65,4 +65,16 @@ export class RaceServiceProvider {
       }
     })
   }
+
+  upgradeVehicle(vehicle : any){
+    return new Promise(resolve=>{
+      this.http.post(this.apiUrl+"/vehicle/upgrade", vehicle).subscribe(data =>{
+        console.log(data);
+        resolve(data);
+      }), error => {
+        console.log(error);
+      }
+    })
+  }
+
 }

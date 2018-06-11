@@ -5,10 +5,17 @@
 </ion-header>
 
 <ion-content padding class="bg">
-  <form (ngSubmit)="SimulateRace()">
-    <button ion-button round type="submit" block>Race</button>
-  </form>
+  <ion-item>
+    <ion-label>Choose track</ion-label>
+    <ion-select [(ngModel)]="selectedTrack" (ionChange)="trackFilter()">
+      <ion-option *ngFor="let t of tracks" [value]="t._id">{{t.location}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <button (click)="SimulateRace()" ion-button round type="submit" block>Race</button>
     
+  <br>
+
   <ion-list inset *ngIf="display_results">
     <ion-item *ngFor="let section_times of results.sections">
       <!-- {{loadingFunction()}} zakomentirano ker preveč naspamma nevem zakaj - to be fixed -->

@@ -20,17 +20,28 @@ import { LoadingController } from 'ionic-angular';
 export class RacePage {
 
   results : any;
+  tracks : any;
+  selectedTrack : any;
+
   display_results: boolean;
   constructor(public navCtrl: NavController, public navParams: NavParams, public raceServiceProvider : RaceServiceProvider, public loadingController: LoadingController) {
     this.display_results = false;
+    this.raceServiceProvider.getTracks().then(data => {
+      this.tracks = data;
+      console.log(JSON.stringify(this.tracks));
+    })
   }
 
   SimulateRace(){
-    this.raceServiceProvider.SimulateRace(JSON.parse(localStorage.getItem("currentUser"))._id).then(data => {
+    this.raceServiceProvider.SimulateRace(this.selectedTrack,JSON.parse(localStorage.getItem("currentUser"))._id).then(data => {
       this.results = data;
       this.display_results = true;
       console.log(JSON.stringify(this.results));
     })
+  }
+
+  trackFilter(){
+    console.log(this.selectedTrack);
   }
 
   loadingFunction() {

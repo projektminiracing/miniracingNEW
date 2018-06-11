@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /*
@@ -38,6 +38,30 @@ export class RegisterServiceProvider {
   updateUser(user_profile: any){
     return new Promise(resolve=>{
       this.http.put(this.apiUrl+"/user/"+user_profile._id, user_profile).subscribe(data =>{
+        console.log(data);
+      }), error => {
+        console.log(error);
+      }
+    })
+  }
+
+  getProfilePicture(user_id: string){
+    return new Promise(resolve => {
+      this.http.get(this.apiUrl+"/user/photo/"+user_id).subscribe(data => {
+        resolve(data);
+      }), err => {
+        console.log(err);
+      }
+    })
+  }
+
+  updateProfilePicture(fileToUpload: File, _id: string){
+    return new Promise(resolve=>{
+      const formData: FormData = new FormData();
+      const headers = new HttpHeaders();
+      formData.append('slika', fileToUpload, fileToUpload.name);
+
+      this.http.post(this.apiUrl+"/user/photo/"+_id, formData,{headers,withCredentials:true}).subscribe(data =>{
         console.log(data);
       }), error => {
         console.log(error);

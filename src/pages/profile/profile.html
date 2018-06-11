@@ -17,6 +17,11 @@
       <button ion-fab color="secondary" (click)="share('twitter', fab)"><ion-icon name="logo-twitter"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
+
+ 
+  <img class="card-img" src="{{photoHost+user_profile.photo_path}}">
+  <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+  <button ion-fab color="secondary" (click)="updateProfilePicture()"><ion-icon name="camera"></ion-icon></button>
         
   <form (ngSubmit)="updateUser()">
     <ion-item>
