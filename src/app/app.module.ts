@@ -28,7 +28,7 @@ import { RaceServiceProvider } from '../providers/race-service/race-service';
     TabsPage,
     TracksPage,
     ProfilePage,
-    CareerPage
+    CareerPage,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +44,7 @@ import { RaceServiceProvider } from '../providers/race-service/race-service';
     TabsPage,
     TracksPage,
     ProfilePage,
-    CareerPage
+    CareerPage,
   ],
   providers: [
     StatusBar,

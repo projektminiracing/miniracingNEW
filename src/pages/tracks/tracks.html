@@ -11,8 +11,8 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card>
-    <ion-list *ngFor="let track of results">
+  <ion-list *ngFor="let track of results">
+    <ion-card (click)="openModal(track._id)">
       <button ion-item>
         <ion-icon name="pin" item-start></ion-icon>
         {{track.location}}
@@ -29,14 +29,6 @@
         <ion-icon name="refresh" item-start></ion-icon>
         {{track.laps}}
       </button>   
-    </ion-list>
-  </ion-card>
-  <!-- <div class="list list-description">
-    <ion-list inset>
-      <ion-item *ngFor="let section of track.sections">
-        <h2>{{section.elevation}}</h2>
-        <p>Elevation</p><br>
-      </ion-item>
-    </ion-list>
-  </div> -->
+    </ion-card>
+  </ion-list>
 </ion-content>

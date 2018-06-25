@@ -46,7 +46,7 @@ export class ProfilePage {
     const options: CameraOptions = {
 			quality : 75,
       destinationType : this.camera.DestinationType.DATA_URL,
-      sourceType : this.camera.PictureSourceType.PHOTOLIBRARY,
+      sourceType : this.camera.PictureSourceType.PHOTOLIBRARY, //namesto PHOTOLIBRARY daš CAMERA
       encodingType: this.camera.EncodingType.JPEG,
       saveToPhotoAlbum: false
     }

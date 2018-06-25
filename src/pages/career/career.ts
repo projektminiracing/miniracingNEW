@@ -21,12 +21,17 @@ export class CareerPage {
   driver : any;
   vehicle : any;
 
+  tmpDriver : any;
+  tmpVehicle : any;
+
   upgradesLeft : any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public raceServiceProvider : RaceServiceProvider, private alertController: AlertController) {
     this.getVehicle();
     this.getDriver();
-    this.upgradesLeft = 5;
+    // this.upgradesLeft = 0;
+    this.upgradesLeft = parseInt(localStorage.getItem("skillPoints"));
+    console.log(this.upgradesLeft);
   }
 
   getVehicle(){
@@ -53,10 +58,13 @@ export class CareerPage {
         console.log(this.driver);
         
         this.upgradesLeft--;
-        this.raceServiceProvider.upgradeDriver(this.driver).then(data => {
-          this.driver = data;
-          console.log(this.driver);
+        localStorage.setItem("skillPoints", this.upgradesLeft.toString());
+        this.tmpDriver = this.driver;
+        this.raceServiceProvider.upgradeDriver(this.tmpDriver).then(data => {
+          this.tmpDriver = data;
+          console.log(this.tmpDriver);
         })
+        this.driver = this.tmpDriver;
       }
       if(choice == "vehicle"){
         console.log("vozilo", attribute, value);
@@ -65,19 +73,31 @@ export class CareerPage {
         else if(attribute == "engineHS")
           this.vehicle["engine"]["horsePower"] += value;
         else
-          this.vehicle[attribute] += value;
+          this.vehicle[attribute] += value; //spremeni pravilno
 
         this.upgradesLeft--;
-        this.raceServiceProvider.upgradeVehicle(this.vehicle).then(data => {
-          this.vehicle = data;
-          console.log(this.vehicle);
+        localStorage.setItem("skillPoints", this.upgradesLeft.toString());
+        this.tmpVehicle = this.vehicle;
+        this.raceServiceProvider.upgradeVehicle(this.tmpVehicle).then(data => {
+          this.tmpVehicle = data; //zaradi tega ker je asinhrono? se ne prepiše v model in se ne posodobi grafično, čeprav se updata v bazo
+          console.log("ZNOTRAJ SERVICA");
+          console.log(this.tmpVehicle);
         })
-        console.log(this.vehicle);
+        this.vehicle = this.tmpVehicle;
       }
     }
     else{
       this.alert();
     }
+  }
+
+  isRecommended(attribute: string){
+    var attr = localStorage.getItem("recommendedUpgrade");
+    var attr2 = attr.split('|');
+    if(attr2.indexOf(attribute) !== -1) {
+      return false;
+    }
+    return true; 
   }
 
   alert(){

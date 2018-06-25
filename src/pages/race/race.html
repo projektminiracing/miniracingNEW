@@ -7,22 +7,29 @@
 <ion-content padding class="bg">
   <ion-item>
     <ion-label>Choose track</ion-label>
-    <ion-select [(ngModel)]="selectedTrack" (ionChange)="trackFilter()">
+    <ion-select [(ngModel)]="selectedTrack">
       <ion-option *ngFor="let t of tracks" [value]="t._id">{{t.location}}</ion-option>
     </ion-select>
   </ion-item>
 
   <button (click)="SimulateRace()" ion-button round type="submit" block>Race</button>
     
-  <br>
-
-  <ion-list inset *ngIf="display_results">
-    <ion-item *ngFor="let section_times of results.sections">
-      <!-- {{loadingFunction()}} zakomentirano ker preveč naspamma nevem zakaj - to be fixed -->
-      <ul *ngFor="let times of section_times">
-        <li>{{times}}</li> 
-      </ul>
-      <br>
-    </ion-item>
-  </ion-list>
+  <ion-item inset *ngIf="display_results">
+    <ion-list *ngFor="let key of  [0,1,2,3,4]">
+      <h3 *ngIf="key == user_driver_index">
+        {{key+1}}. {{section_result[0][key]}} -- {{section_result[1][key]}}
+      </h3>
+      <p *ngIf="key != user_driver_index">
+        {{key+1}}. {{section_result[0][key]}} -- {{section_result[1][key]}}
+      </p>
+    </ion-list>
+  </ion-item>
+  <ion-item *ngIf="display_finalTimes">
+    <h3>Final results:</h3><br>
+    <ion-list *ngFor="let i of [0,1,2,3,4]">
+      <p>
+        {{i+1}}. {{results['final_times'][i]}} -- {{results['drivers'][i]['name']}}
+      </p>
+    </ion-list>
+  </ion-item>
 </ion-content>

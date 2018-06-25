@@ -22,26 +22,130 @@ export class RacePage {
   results : any;
   tracks : any;
   selectedTrack : any;
+  section_result : any; //prikaz trenutnega sectiona - idji se pretvorijo v imena
+  user_driver_index : number;
 
-  display_results: boolean;
+  display_results : boolean;
+  display_finalTimes : boolean;
   constructor(public navCtrl: NavController, public navParams: NavParams, public raceServiceProvider : RaceServiceProvider, public loadingController: LoadingController) {
     this.display_results = false;
+    this.display_finalTimes = false;
     this.raceServiceProvider.getTracks().then(data => {
       this.tracks = data;
-      console.log(JSON.stringify(this.tracks));
     })
   }
 
   SimulateRace(){
     this.raceServiceProvider.SimulateRace(this.selectedTrack,JSON.parse(localStorage.getItem("currentUser"))._id).then(data => {
       this.results = data;
-      this.display_results = true;
-      console.log(JSON.stringify(this.results));
+      this.CalculateSkillPointsFromRace();
+      this.ProcessRaceResults();
     })
   }
 
-  trackFilter(){
-    console.log(this.selectedTrack);
+  RecommendUpgrade(){
+    localStorage.removeItem("recommendedUpgrade");
+    localStorage.setItem("recommendedUpgrade", "");
+    var speed = 0;
+    var overtaking = 0;
+    var blocking = 0;
+    var reaction_time = 0;
+    var concentration = 0;
+    var patience = 0;
+    var aggresiveness = 0;
+    var intelligence = 0;
+    for(var i = 0; i < 5; i++){
+      if(this.results["drivers"][i]["overall"] > this.results["drivers"][this.user_driver_index]["overall"]){
+
+        if(this.results["drivers"][i]["speed"] > this.results["drivers"][this.user_driver_index]["speed"] && speed < 1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|speed");
+          speed++;
+        }
+        if(this.results["drivers"][i]["overtaking"] > this.results["drivers"][this.user_driver_index]["overtaking"] && overtaking < 1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|overtaking");
+          overtaking++;
+        }
+        if(this.results["drivers"][i]["blocking"] > this.results["drivers"][this.user_driver_index]["blocking"] && blocking <1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|blocking");
+          blocking++;
+        }
+        if(this.results["drivers"][i]["reaction_time"] > this.results["drivers"][this.user_driver_index]["reaction_time"] && reaction_time <1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|reaction_time");
+          reaction_time++;
+        }
+        if(this.results["drivers"][i]["concentration"] > this.results["drivers"][this.user_driver_index]["concentration"] && concentration <1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|concentration");
+          concentration++;
+        }
+        if(this.results["drivers"][i]["patience"] > this.results["drivers"][this.user_driver_index]["patience"] && patience <1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|patience");
+          patience++;
+        }
+        if(this.results["drivers"][i]["aggresiveness"] > this.results["drivers"][this.user_driver_index]["aggresiveness"] && aggresiveness <1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|aggresiveness");
+          aggresiveness++;
+        }
+        if(this.results["drivers"][i]["intelligence"] > this.results["drivers"][this.user_driver_index]["intelligence"] && intelligence <1){
+          localStorage.setItem("recommendedUpgrade", localStorage.getItem("recommendedUpgrade") + "|intelligence");
+          intelligence++;
+        }
+      }
+    }
+    console.log(localStorage.getItem("recommendedUpgrade"));
+  }
+
+  async sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+  async ProcessRaceResults(){
+    for(var i = 0; i < this.results["sections"].length; i++){  //skozi vsak section
+      await this.sleep(1000);
+      this.ProcessSectionResults(this.results["sections"][i]);
+      this.display_results = true;
+    }
+    this.display_finalTimes = true;
+    this.RecommendUpgrade();
+    console.log(this.display_finalTimes);
+  }
+
+  DriverIDtoName(find_id: string){ //nadje tudi pozicijo user driverja
+    for(var i = 0; i < 5; i++){
+      if(this.results["drivers"][i]["_id"] == find_id){
+        return this.results["drivers"][i]["name"];
+      }
+    } 
+  }
+
+  FindUserDriverSectionPosition(section: any){
+    for(var i = 0; i < 5; i++){
+      for(var j = 0; j < 5; j++){
+        if(this.results["drivers"][j]["_id"] == section[i]){
+          if(this.results["drivers"][j]["user_id"] == JSON.parse(localStorage.getItem("currentUser"))._id){
+            return i;
+          }
+        }
+      }
+    }
+  }
+
+  ProcessSectionResults(section: any){
+    this.user_driver_index = this.FindUserDriverSectionPosition(section[1]);
+    for(var i = 0; i < section[1].length; i++){
+      section[1][i] = this.DriverIDtoName(section[1][i]); //spremeni ID-je v driverje za izpis
+    }
+    this.section_result = section; //nov izpis
+  }
+
+  CalculateSkillPointsFromRace(){
+    var skillPoints = parseInt(localStorage.getItem("skillPoints"));
+    for(var i = 0; i < 5; i++){
+      if(this.results["drivers"][i]["user_id"] == JSON.parse(localStorage.getItem("currentUser"))._id){
+        skillPoints = Math.abs(i - 5);
+        localStorage.setItem("skillPoints", skillPoints.toString());
+      }
+    }
+    //console.log(localStorage.getItem("skillPoints"));
   }
 
   loadingFunction() {

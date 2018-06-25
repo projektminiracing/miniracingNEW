@@ -35,6 +35,16 @@ export class RaceServiceProvider {
     })
   }
 
+  getTrack(track_id : string){
+    return new Promise(resolve => {
+      this.http.get(this.apiUrl + '/track/' + track_id).subscribe(data => {
+        resolve(data);
+      }), err => {
+        console.log(err);
+      }
+    })
+  }
+
   getDriver(user_id : string){
     return new Promise(resolve => {
       this.http.get(this.apiUrl + '/driver/user_id/'+user_id).subscribe(data => {
