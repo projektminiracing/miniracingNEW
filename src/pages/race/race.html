@@ -24,12 +24,15 @@
       </p>
     </ion-list>
   </ion-item>
-  <ion-item *ngIf="display_finalTimes">
+  <ion-item *ngIf="display_results">
     <h3>Final results:</h3><br>
     <ion-list *ngFor="let i of [0,1,2,3,4]">
       <p>
-        {{i+1}}. {{results['final_times'][i]}} -- {{results['drivers'][i]['name']}}
+        {{i+1}}. {{summed_results[0][i]}} -- {{summed_results[1][i]}}
+        <ion-badge color="secondary" *ngIf="summed_results[3][i] >= 0">{{summed_results[3][i]}}</ion-badge>
+        <ion-badge color="warning" *ngIf="summed_results[3][i] < 0">{{summed_results[3][i]}}</ion-badge>
       </p>
+      
     </ion-list>
   </ion-item>
 </ion-content>

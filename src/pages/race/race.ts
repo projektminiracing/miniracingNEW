@@ -24,6 +24,7 @@ export class RacePage {
   selectedTrack : any;
   section_result : any; //prikaz trenutnega sectiona - idji se pretvorijo v imena
   user_driver_index : number;
+  summed_results: any;
 
   display_results : boolean;
   display_finalTimes : boolean;
@@ -36,8 +37,19 @@ export class RacePage {
   }
 
   SimulateRace(){
-    this.raceServiceProvider.SimulateRace(this.selectedTrack,JSON.parse(localStorage.getItem("currentUser"))._id).then(data => {
+    this.raceServiceProvider.SimulateRace(this.selectedTrack,JSON.parse(localStorage.getItem("currentUser"))._id).then(data => {  
       this.results = data;
+      this.summed_results = new Array(5);
+      this.summed_results[0] = new Array(this.results["sections"][0][0].length);
+      this.summed_results[1] = new Array(this.results["sections"][0][1].length);
+      this.summed_results[2] = new Array(this.results["sections"][0][1].length);
+      this.summed_results[3] = new Array(this.results["sections"][0][1].length);
+      this.summed_results[4] = new Array(this.results["sections"][0][1].length);
+      for(var i = 0; i < this.summed_results[0].length; i++) this.summed_results[0][i] = 0.0;
+      for(i = 0; i < this.summed_results[1].length; i++) this.summed_results[1][i] = this.results["sections"][0][1][i];
+      for(i = 0; i < this.summed_results[2].length; i++) this.summed_results[2][i] = this.DriverIDtoName(this.summed_results[1][i]);
+      for(i = 0; i < this.summed_results[3].length; i++) this.summed_results[3][i] = 0;
+
       this.CalculateSkillPointsFromRace();
       this.ProcessRaceResults();
     })
@@ -94,17 +106,57 @@ export class RacePage {
     console.log(localStorage.getItem("recommendedUpgrade"));
   }
 
+  AddSectionToSum(section: any){
+    for(var i = 0; i < this.summed_results[4].length; i++) this.summed_results[4][i] = i;
+
+    for(var j = 0; j < section[1].length; j++){
+      for(i = 0; i < this.summed_results[0].length; i++){
+        if(this.summed_results[1][i] == section[1][j]){
+          this.summed_results[0][i] += section[0][j];    
+        }
+      }
+    }
+    console.log(this.summed_results);
+    var swapped;
+    do {
+        swapped = false;
+        for (i=0; i < this.summed_results[0].length-1; i++) {
+            if (this.summed_results[0][i] > this.summed_results[0][i+1]) {
+                var temp = this.summed_results[0][i];
+                this.summed_results[0][i] = this.summed_results[0][i+1];
+                this.summed_results[0][i+1] = temp;
+                temp = this.summed_results[1][i];
+                this.summed_results[1][i] = this.summed_results[1][i+1];
+                this.summed_results[1][i+1] = temp;
+                temp = this.summed_results[2][i];
+                this.summed_results[2][i] = this.summed_results[2][i+1];
+                this.summed_results[2][i+1] = temp;
+                temp = this.summed_results[3][i];
+                this.summed_results[4][i] = this.summed_results[3][i+1];
+                this.summed_results[4][i+1] = temp;
+                swapped = true;
+            }
+        }
+    } while (swapped);
+    for(j = 0; j < this.summed_results[4].length; j++){
+      this.summed_results[3][j] = j - this.summed_results[4][j];
+    }
+    console.log("_---------------------------_");
+  }
+
   async sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   
   async ProcessRaceResults(){
     for(var i = 0; i < this.results["sections"].length; i++){  //skozi vsak section
-      await this.sleep(1000);
+      await this.sleep(3000);
+      this.AddSectionToSum(this.results["sections"][i]);
       this.ProcessSectionResults(this.results["sections"][i]);
       this.display_results = true;
     }
     this.display_finalTimes = true;
+    console.log(this.summed_results);
     this.RecommendUpgrade();
     console.log(this.display_finalTimes);
   }
