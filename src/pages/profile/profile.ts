@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RegisterServiceProvider } from '../../providers/register-service/register-service';
 //import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FabContainer } from 'ionic-angular';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @IonicPage()
 @Component({
@@ -14,13 +15,21 @@ export class ProfilePage {
   photoHost='http://localhost:8000/';
   fileToUpload: File = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public registerServiceProvider: RegisterServiceProvider) { //private camera
+  constructor(public navCtrl: NavController, public navParams: NavParams, public registerServiceProvider: RegisterServiceProvider, private socialSharing: SocialSharing) {
     this.user_profile = JSON.parse(localStorage.getItem("currentUser"));
   }
 
   share(socialNet: string, fab: FabContainer) {
     fab.close();
     console.log("Sharing in", socialNet);
+
+    var msg  = "miniracing Ionic application is awesome! Go check it out!";
+    if(socialNet == "twitter"){
+      this.socialSharing.shareViaTwitter(msg, null, null);
+    }
+    if(socialNet == "facebook"){
+      this.socialSharing.shareViaFacebook(msg, null, null);
+    }
   }
 
   updateUser(){

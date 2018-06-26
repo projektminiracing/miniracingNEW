@@ -24,12 +24,13 @@ export class CareerPage {
   tmpDriver : any;
   tmpVehicle : any;
 
+  shownGroup = null;
+
   upgradesLeft : any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public raceServiceProvider : RaceServiceProvider, private alertController: AlertController) {
     this.getVehicle();
     this.getDriver();
-    // this.upgradesLeft = 0;
     this.upgradesLeft = parseInt(localStorage.getItem("skillPoints"));
     console.log(this.upgradesLeft);
   }
@@ -49,6 +50,17 @@ export class CareerPage {
       console.log(this.driver);
     })
   }
+  
+  toggleGroup(group) {
+    if (this.isGroupShown(group)) {
+        this.shownGroup = null;
+    } else {
+        this.shownGroup = group;
+    }
+  };
+  isGroupShown(group) {
+      return this.shownGroup === group;
+  };
 
   upgrade(choice: string, attribute: string, value: number) {
     if(this.upgradesLeft != 0){
@@ -69,7 +81,7 @@ export class CareerPage {
       if(choice == "vehicle"){
         console.log("vozilo", attribute, value);
         if(attribute == "engineBC")
-          this.vehicle["engine"]["batteryConsumption"] -= value;
+          this.vehicle["engine"]["batteryConsumption"] += value;
         else if(attribute == "engineHS")
           this.vehicle["engine"]["horsePower"] += value;
         else
@@ -79,7 +91,7 @@ export class CareerPage {
         localStorage.setItem("skillPoints", this.upgradesLeft.toString());
         this.tmpVehicle = this.vehicle;
         this.raceServiceProvider.upgradeVehicle(this.tmpVehicle).then(data => {
-          this.tmpVehicle = data; //zaradi tega ker je asinhrono? se ne prepiše v model in se ne posodobi grafično, čeprav se updata v bazo
+          this.tmpVehicle = data;
           console.log("ZNOTRAJ SERVICA");
           console.log(this.tmpVehicle);
         })

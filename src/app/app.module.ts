@@ -15,6 +15,7 @@ import { CareerPage } from '../pages/career/career';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { RegisterServiceProvider } from '../providers/register-service/register-service';
 import { RaceServiceProvider } from '../providers/race-service/race-service';
 
@@ -49,6 +50,7 @@ import { RaceServiceProvider } from '../providers/race-service/race-service';
   providers: [
     StatusBar,
     Camera,
+    SocialSharing,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RegisterServiceProvider,
