@@ -15,14 +15,20 @@
     <ion-fab-list side="top">
       <button ion-fab color="primary" (click)="share('facebook', fab)"><ion-icon name="logo-facebook"></ion-icon></button>
       <button ion-fab color="secondary" (click)="share('twitter', fab)"><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab color="secondary" (click)="share('email', fab)"><ion-icon name="mail"></ion-icon></button>
+      <button ion-fab color="secondary" (click)="share('sms', fab)"><ion-icon name="phone"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
-
- 
-  <img id="profile_picture_img" class="card-img" max-height="500" max-width="500" src="{{photoHost+user_profile.photo_path}}">
+  
+  
+  <img id="profile_picture_img" class="card-img" max-height="500" max-width="500" src="{{photoHost+user_profile.photo_path}}" *ngIf="!base64Image">
+  <img id="profile_picture_img" class="card-img" max-height="500" max-width="500" [src]="base64Image" *ngIf="base64Image">
   <input type="file" id="file" (change)="handleFileInput($event.target.files)">
   <button (click)="updateProfilePicture()" ion-button icon-only color="royal">
     <ion-icon name="md-cloud-upload"></ion-icon>
+  </button>
+  <button (click)="takePicture()" ion-button icon-only color="royal">
+      <ion-icon name="camera"></ion-icon>
   </button>
         
   <form (ngSubmit)="updateUser()">

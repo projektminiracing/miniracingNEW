@@ -12,9 +12,9 @@
     </ion-select>
   </ion-item>
 
-  <button (click)="SimulateRace()" ion-button round type="submit" block>Race</button>
+  <button (click)="SimulateRace()" ion-button round type="submit" block>Race</button><br><br>
     
-  <ion-item inset *ngIf="display_results">
+  <!-- <ion-item inset *ngIf="display_results">
     <ion-list *ngFor="let key of  [0,1,2,3,4]">
       <h3 *ngIf="key == user_driver_index">
         {{key+1}}. {{section_result[0][key]}} -- {{section_result[1][key]}}
@@ -23,16 +23,27 @@
         {{key+1}}. {{section_result[0][key]}} -- {{section_result[1][key]}}
       </p>
     </ion-list>
-  </ion-item>
-  <ion-item *ngIf="display_results">
-    <h3>Final results:</h3><br>
-    <ion-list *ngFor="let i of [0,1,2,3,4]">
-      <p>
-        {{i+1}}. {{summed_results[0][i]}} -- {{summed_results[1][i]}}
-        <ion-badge color="secondary" *ngIf="summed_results[3][i] >= 0">{{summed_results[3][i]}}</ion-badge>
-        <ion-badge color="warning" *ngIf="summed_results[3][i] < 0">{{summed_results[3][i]}}</ion-badge>
-      </p>
-      
-    </ion-list>
-  </ion-item>
+  </ion-item> -->
+  <ion-row>
+    <ion-col>
+      <div *ngIf="display_results">
+        <h3>RESULTS</h3><br>
+        <ion-list *ngFor="let i of [0,1,2,3,4]">
+          <ion-col col-33>
+            <ion-badge color="light" *ngIf="summed_results[3][i] == 0">+{{summed_results[3][i]}}</ion-badge>
+            <ion-badge color="secondary" *ngIf="summed_results[3][i] > 0">+{{summed_results[3][i]}}</ion-badge>
+            <ion-badge color="danger" *ngIf="summed_results[3][i] < 0">{{summed_results[3][i]}}</ion-badge>
+          </ion-col>
+          <ion-col col-33>
+            <ion-badge *ngIf="i != user_driver_index_summed" color="light">{{summed_results[0][i]}}</ion-badge>
+            <ion-badge *ngIf="i == user_driver_index_summed" color="primary">{{summed_results[0][i]}}</ion-badge>
+          </ion-col>
+          <ion-col col-33>
+            <ion-badge *ngIf="i != user_driver_index_summed" color="light">{{summed_results[2][i]}}</ion-badge>
+            <ion-badge *ngIf="i == user_driver_index_summed" color="primary">{{summed_results[2][i]}}</ion-badge>
+          </ion-col>
+        </ion-list>
+      </div>
+    </ion-col>
+  </ion-row>
 </ion-content>

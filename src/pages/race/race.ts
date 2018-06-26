@@ -25,6 +25,7 @@ export class RacePage {
   section_result : any; //prikaz trenutnega sectiona - idji se pretvorijo v imena
   user_driver_index : number;
   summed_results: any;
+  user_driver_index_summed: number;
 
   display_results : boolean;
   display_finalTimes : boolean;
@@ -49,6 +50,7 @@ export class RacePage {
       for(i = 0; i < this.summed_results[1].length; i++) this.summed_results[1][i] = this.results["sections"][0][1][i];
       for(i = 0; i < this.summed_results[2].length; i++) this.summed_results[2][i] = this.DriverIDtoName(this.summed_results[1][i]);
       for(i = 0; i < this.summed_results[3].length; i++) this.summed_results[3][i] = 0;
+      for(i = 0; i < this.summed_results[4].length; i++) this.summed_results[4][i] = 0;
 
       this.CalculateSkillPointsFromRace();
       this.ProcessRaceResults();
@@ -107,8 +109,9 @@ export class RacePage {
   }
 
   AddSectionToSum(section: any){
-    for(var i = 0; i < this.summed_results[4].length; i++) this.summed_results[4][i] = i;
-
+    for(var k = 0; k < this.summed_results[4].length; k++) this.summed_results[4][k] = k;
+    
+    var i;
     for(var j = 0; j < section[1].length; j++){
       for(i = 0; i < this.summed_results[0].length; i++){
         if(this.summed_results[1][i] == section[1][j]){
@@ -116,7 +119,6 @@ export class RacePage {
         }
       }
     }
-    console.log(this.summed_results);
     var swapped;
     do {
         swapped = false;
@@ -125,23 +127,30 @@ export class RacePage {
                 var temp = this.summed_results[0][i];
                 this.summed_results[0][i] = this.summed_results[0][i+1];
                 this.summed_results[0][i+1] = temp;
+
                 temp = this.summed_results[1][i];
                 this.summed_results[1][i] = this.summed_results[1][i+1];
                 this.summed_results[1][i+1] = temp;
+
                 temp = this.summed_results[2][i];
                 this.summed_results[2][i] = this.summed_results[2][i+1];
                 this.summed_results[2][i+1] = temp;
-                temp = this.summed_results[3][i];
-                this.summed_results[4][i] = this.summed_results[3][i+1];
+
+                temp = this.summed_results[4][i];
+                this.summed_results[4][i] = this.summed_results[4][i+1];
                 this.summed_results[4][i+1] = temp;
                 swapped = true;
             }
         }
     } while (swapped);
     for(j = 0; j < this.summed_results[4].length; j++){
-      this.summed_results[3][j] = j - this.summed_results[4][j];
+      this.summed_results[3][j] = this.summed_results[4][j] - j;
     }
+    console.log(this.summed_results);
     console.log("_---------------------------_");
+    for(i = 0; i < this.summed_results[0].length; i++){
+      this.summed_results[0][i] = parseFloat(this.summed_results[0][i].toFixed(2));
+    }
   }
 
   async sleep(ms: number) {
@@ -153,6 +162,7 @@ export class RacePage {
       await this.sleep(3000);
       this.AddSectionToSum(this.results["sections"][i]);
       this.ProcessSectionResults(this.results["sections"][i]);
+      this.user_driver_index_summed = this.FindUserDriverSummedPosition();
       this.display_results = true;
     }
     this.display_finalTimes = true;
@@ -167,6 +177,20 @@ export class RacePage {
         return this.results["drivers"][i]["name"];
       }
     } 
+  }
+
+  FindUserDriverSummedPosition(){
+    var user_driver_id;
+    for(var j = 0; j < this.results["drivers"].length; j++){
+      if(this.results["drivers"][j]["user_id"] ==JSON.parse(localStorage.getItem("currentUser"))._id){
+        user_driver_id = this.results["drivers"][j]["_id"];
+      }
+    }
+    for(var i = 0; i < this.summed_results[1].length; i++){
+        if(this.summed_results[1][i] == user_driver_id){
+          return i;
+        }
+    }
   }
 
   FindUserDriverSectionPosition(section: any){

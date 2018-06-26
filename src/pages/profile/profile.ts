@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RegisterServiceProvider } from '../../providers/register-service/register-service';
-//import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FabContainer } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
@@ -14,8 +14,9 @@ export class ProfilePage {
   user_profile: any;
   photoHost='http://localhost:8000/';
   fileToUpload: File = null;
+  public base64Image: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public registerServiceProvider: RegisterServiceProvider, private socialSharing: SocialSharing) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public registerServiceProvider: RegisterServiceProvider, private socialSharing: SocialSharing, private camera: Camera) {
     this.user_profile = JSON.parse(localStorage.getItem("currentUser"));
   }
 
@@ -27,8 +28,15 @@ export class ProfilePage {
     if(socialNet == "twitter"){
       this.socialSharing.shareViaTwitter(msg, null, null);
     }
-    if(socialNet == "facebook"){
+    else if(socialNet == "facebook"){
       this.socialSharing.shareViaFacebook(msg, null, null);
+    }
+    else if(socialNet == "email"){
+      this.socialSharing.shareViaEmail(msg,"Miniracing",['lolek.boleq@gmail.com']).then(() =>{
+
+      }).catch(() => {
+
+      })
     }
   }
 
@@ -50,24 +58,21 @@ export class ProfilePage {
       })
     }
   }
-  /*
+  
   takePicture(){
     const options: CameraOptions = {
-			quality : 75,
-      destinationType : this.camera.DestinationType.DATA_URL,
-      sourceType : this.camera.PictureSourceType.PHOTOLIBRARY, //namesto PHOTOLIBRARY daš CAMERA
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      saveToPhotoAlbum: false
+      mediaType: this.camera.MediaType.PICTURE
     }
     this.camera.getPicture(options).then((imageData) => {
-			let cameraImageSelector = document.getElementById('camera-image');
-			let image = "data:image/jpeg;base64," + imageData;
-			cameraImageSelector.setAttribute('src', image );
-  			}, (err) => {
+        this.base64Image = 'data:image/jpeg;base64,' + imageData;
+        this.fileToUpload = imageData;
+  		}, (err) => {
 			 console.log(err);
 		});	
   }
-  */
 
   logout(){ 
     localStorage.removeItem("currentUser");
